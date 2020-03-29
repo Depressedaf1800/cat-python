@@ -12,7 +12,7 @@ from discord.ext import commands
 load_dotenv()
 
 #define bot
-cat = commands.Bot(command_prefix = "!", case_sensitive = False)
+cat = commands.Bot(command_prefix = "!", case_insensitive = True)
 
 #when bot is online
 @cat.event
