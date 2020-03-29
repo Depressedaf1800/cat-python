@@ -16,7 +16,7 @@ async def on_message(message):
     if message.content.startswith('!ping'):
         m = await message.channel.send('pinging...')
         time.sleep(1)
-        await m.edit(content = f'latency is {round(cat.latency)}')
+        await m.edit(content = f'latency is {round(cat.latency*1000)}')
 
 
 cat.run(os.environ['TOKEN'])
