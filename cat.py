@@ -32,7 +32,7 @@ async def on_message(message):
     print(f'{message.author.display_name} said {message.content} in {message.channel}')
     if message.author == cat.user:
         return
-    if message.content == "hi":
+    if message.content.lower() == "hi":
         await message.channel.send(f"hi {message.author.mention} :3")
     await cat.process_commands(message)
 
