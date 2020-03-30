@@ -1,4 +1,4 @@
+PyNaCl
 discord
-discord[voice]
 python-dotenv
 youtube_dl
