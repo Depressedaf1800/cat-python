@@ -58,12 +58,13 @@ class voice(commands.Cog):
             print("song being played now")
             await ctx.send("music is playing")
             return
-        await ctx.send("searching ")
+        m = await ctx.send("searching ")
 
         voice = get(self.cat.voice_clients, guild = ctx.guild)
 
         ydl_opts = {
             'format': 'bestaudio/best',
+            'quiet': True,
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
@@ -87,8 +88,47 @@ class voice(commands.Cog):
         voice.source.volume = 0.07
 
         nname = name.rsplit("-", 2)
+        await m.delete()
         await ctx.send(f"playing **{nname[0]}**")
         print("playing")
+
+    @commands.command()
+    async def pause(self, ctx):
+        voice = get(self.cat.voice_clients, guild = ctx.guild)
+
+        if voice and voice.is_playing():
+            print("music pause")
+            voice.pause()
+            await ctx.send("paused")
+        else:
+            print("no music")
+            await ctx.send("no music")
+    
+    @commands.command()
+    async def resume(self, ctx):
+        voice = get(self.cat.voice_clients, guild = ctx.guild)
+        
+        if voice and voice.is_paused():
+            print("music resumed")
+            voice.resume()
+            await ctx.send("music resumed")
+        else:
+            print("not paused")
+            await ctx.send("not paused")
+
+    @commands.command()
+    async def stop(self, ctx):
+        voice = get(self.cat.voice_clients, guild = ctx.guild)
+
+        if voice and (voice.is_playing() or voice.is_paused()):
+            print("music stopped")
+            voice.stop()
+            await ctx.send("music stopped")
+        else:
+            print("no music")
+            await ctx.send("no music")
+
+
 
 def setup(cat):
     cat.add_cog(voice(cat))
