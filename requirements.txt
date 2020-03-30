@@ -2,4 +2,3 @@ PyNaCl
 discord
 python-dotenv
 youtube_dl
-ffmpeg-python

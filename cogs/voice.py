@@ -10,6 +10,9 @@ class voice(commands.Cog):
     def __init__(self, cat):
         self.cat = cat
 
+    if not discord.opus.is_loaded():
+        discord.opus.load_opus('libopus.so')
+
     @commands.command(name = "join")
     async def join(self, ctx):
         global voice
