@@ -1,11 +1,12 @@
 import discord
 import youtube_dl
 import os
+import random
 
 from discord.ext import commands
 from discord.utils import get
 
-class voice(commands.Cog):
+class smoke(commands.Cog):
 
     def __init__(self, cat):
         self.cat = cat
@@ -13,9 +14,12 @@ class voice(commands.Cog):
     if not discord.opus.is_loaded():
         discord.opus.load_opus('libopus.so')
 
-    @commands.command(name = "join")
-    async def join(self, ctx):
+    @commands.command()
+    async def smoke(self, ctx):
         global voice
+        urllist = ('https://youtu.be/clU8c2fpk2sg','https://www.youtube.com/watch?v=HQKneQaM-KI',
+        'https://www.youtube.com/watch?v=QE4v30t-kY4','https://youtu.be/X3MYWwS-Zrg')
+        url = random.choice(urllist)
         channel = ctx.author.voice.channel
         voice = get(self.cat.voice_clients, guild = ctx.guild)
 
@@ -32,20 +36,6 @@ class voice(commands.Cog):
             voice = await channel.connect()
             print(f"joined {channel}")
 
-        await ctx.send("meow 🎶 :3")
-
-    @commands.command(name = "leave", aliases = ["disconnect"])
-    async def leave(self, ctx):
-        voice = get(self.cat.voice_clients, guild = ctx.guild)
-
-        if voice and voice.is_connected():
-            await voice.disconnect()
-            await ctx.send(f"cat disconnected")
-        else:
-            await ctx.send("meow :3")
-
-    @commands.command(name = "play")
-    async def play(self, ctx, url: str):
         song_there = os.path.isfile("song.mp3")
         try:
             if song_there:
@@ -55,8 +45,6 @@ class voice(commands.Cog):
             await ctx.send("music is currently playing")
             return
         m = await ctx.send("...searching 🔍")
-
-        voice = get(self.cat.voice_clients, guild = ctx.guild)
 
         ydl_opts = {
             'format': 'bestaudio/best',
@@ -85,36 +73,5 @@ class voice(commands.Cog):
         await m.delete()
         await ctx.send(f"playing **{nname[0]}**")
 
-    @commands.command()
-    async def pause(self, ctx):
-        voice = get(self.cat.voice_clients, guild = ctx.guild)
-
-        if voice and voice.is_playing():
-            voice.pause()
-            await ctx.send("paused")
-        else:
-            await ctx.send("no music running")
-    
-    @commands.command()
-    async def resume(self, ctx):
-        voice = get(self.cat.voice_clients, guild = ctx.guild)
-        
-        if voice and voice.is_paused():
-            voice.resume()
-            await ctx.send("music resumed")
-        else:
-            print("no music paused")
-            await ctx.send("no music paused")
-
-    @commands.command()
-    async def stop(self, ctx):
-        voice = get(self.cat.voice_clients, guild = ctx.guild)
-
-        if voice and (voice.is_playing() or voice.is_paused()):
-            voice.stop()
-            await ctx.send("music stopped")
-        else:
-            await ctx.send("no music running")
-
 def setup(cat):
-    cat.add_cog(voice(cat))
+    cat.add_cog(smoke(cat))
