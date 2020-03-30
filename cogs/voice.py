@@ -32,7 +32,7 @@ class voice(commands.Cog):
             voice = await channel.connect()
             print(f"joined {channel}")
 
-        await ctx.send(f"cat's meowing in {channel}")
+        await ctx.send("meow 🎶 :3")
 
     @commands.command(name = "leave", aliases = ["disconnect"])
     async def leave(self, ctx):
@@ -41,10 +41,8 @@ class voice(commands.Cog):
 
         if voice and voice.is_connected():
             await voice.disconnect()
-            print(f"left {channel}")
-            await ctx.send(f"cat left {channel}")
+            await ctx.send(f"cat disconnected")
         else:
-            print("not in voice channel")
             await ctx.send("meow :3")
 
     @commands.command(name = "play")
@@ -55,10 +53,9 @@ class voice(commands.Cog):
                 os.remove("song.mp3")
                 print("Removed old song file")
         except PermissionError:
-            print("song being played now")
-            await ctx.send("music is playing")
+            await ctx.send("music is currently playing")
             return
-        m = await ctx.send("searching ")
+        m = await ctx.send("...searching 🔍")
 
         voice = get(self.cat.voice_clients, guild = ctx.guild)
 
@@ -79,54 +76,46 @@ class voice(commands.Cog):
         for file in os.listdir("./"):
             if file.endswith(".mp3"):
                 name = file
-                print(f"audio file: {file}")
                 os.rename(file, "song.mp3")
-                print(f"rename: {file}")
 
-        voice.play(discord.FFmpegPCMAudio("song.mp3"), after = lambda e:print(f"{name} done playing"))
+        voice.play(discord.FFmpegPCMAudio("song.mp3"), after = lambda e:print(f"{name} finished playing"))
         voice.source = discord.PCMVolumeTransformer(voice.source)
         voice.source.volume = 0.07
 
         nname = name.rsplit("-", 2)
         await m.delete()
         await ctx.send(f"playing **{nname[0]}**")
-        print("playing")
 
     @commands.command()
     async def pause(self, ctx):
         voice = get(self.cat.voice_clients, guild = ctx.guild)
 
         if voice and voice.is_playing():
-            print("music pause")
             voice.pause()
             await ctx.send("paused")
         else:
-            print("no music")
-            await ctx.send("no music")
+            await ctx.send("no music running")
     
     @commands.command()
     async def resume(self, ctx):
         voice = get(self.cat.voice_clients, guild = ctx.guild)
         
         if voice and voice.is_paused():
-            print("music resumed")
             voice.resume()
             await ctx.send("music resumed")
         else:
-            print("not paused")
-            await ctx.send("not paused")
+            print("no music paused")
+            await ctx.send("no music paused")
 
     @commands.command()
     async def stop(self, ctx):
         voice = get(self.cat.voice_clients, guild = ctx.guild)
 
         if voice and (voice.is_playing() or voice.is_paused()):
-            print("music stopped")
             voice.stop()
             await ctx.send("music stopped")
         else:
-            print("no music")
-            await ctx.send("no music")
+            await ctx.send("no music running")
 
 
 
