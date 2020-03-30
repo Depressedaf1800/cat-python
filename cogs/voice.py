@@ -36,7 +36,6 @@ class voice(commands.Cog):
 
     @commands.command(name = "leave", aliases = ["disconnect"])
     async def leave(self, ctx):
-        channel = ctx.author.voice.channel
         voice = get(self.cat.voice_clients, guild = ctx.guild)
 
         if voice and voice.is_connected():
