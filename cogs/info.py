@@ -2,7 +2,7 @@ import discord
 import time
 from discord.ext import commands
 
-class ping(commands.Cog):
+class info(commands.Cog):
 
     def __init__(self, cat):
         self.cat = cat
@@ -14,5 +14,5 @@ class ping(commands.Cog):
         await m.edit(content = f"pong 🏓\nlatency is {round(self.cat.latency*1000)}")
 
 def setup(cat):
-    cat.add_cog(ping(cat))
+    cat.add_cog(info(cat))
         

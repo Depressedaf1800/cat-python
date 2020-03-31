@@ -26,12 +26,6 @@ class voice(commands.Cog):
 
         await voice.disconnect()
 
-        if voice and voice.is_connected():
-            await voice.move_to(channel)
-        else:
-            voice = await channel.connect()
-            print(f"joined {channel}")
-
         await ctx.send("meow 🎶 :3")
 
     @commands.command(name = "leave", aliases = ["disconnect"])
@@ -56,7 +50,13 @@ class voice(commands.Cog):
             return
         m = await ctx.send("...searching 🔍")
 
+        channel = ctx.author.voice.channel
         voice = get(self.cat.voice_clients, guild = ctx.guild)
+
+        if voice and voice.is_connected():
+            await voice.move_to(channel)
+        else:
+            voice = await channel.connect()
 
         ydl_opts = {
             'format': 'bestaudio/best',

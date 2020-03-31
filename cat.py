@@ -7,10 +7,11 @@ import dotenv
 
 #extensions
 from dotenv import load_dotenv
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.utils import get
+from itertools import cycle
 
-#load .env
+#load .env and data
 load_dotenv()
 
 #define bot
@@ -25,15 +26,16 @@ async def on_ready():
         try:
             if cog != "__init__":
                 cat.load_extension(f"cogs.{cog}")
-                print(f"{cog} loaded")
+                print(f"{cog} loaded") 
         except Exception as e:
             print(e)
-    
+  
 @cat.event
 async def on_message(message):
     print(f'{message.author.display_name} said {message.content} in {message.channel}')
     if message.author == cat.user:
         return
+    
     if message.content.lower() == "hi":
         await message.channel.send(f"hi {message.author.mention} :3")
     await cat.process_commands(message)
