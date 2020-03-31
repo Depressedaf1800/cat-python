@@ -7,7 +7,7 @@ class info(commands.Cog):
     def __init__(self, cat):
         self.cat = cat
 
-    @commands.command()
+    @commands.command(name = "ping", aliases = ["latency"], help = "returns ping :3")
     async def ping(self, ctx):
         m = await ctx.send("...pinging 🏓")
         time.sleep(1)

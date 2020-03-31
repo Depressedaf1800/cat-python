@@ -16,6 +16,7 @@ load_dotenv()
 
 #define bot
 cat = commands.Bot(command_prefix = "!", case_insensitive = True)
+cat.remove_command("help")
 
 #when bot is online
 @cat.event

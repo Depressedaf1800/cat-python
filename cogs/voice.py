@@ -10,10 +10,10 @@ class voice(commands.Cog):
     def __init__(self, cat):
         self.cat = cat
 
-    if not discord.opus.is_loaded():
-        discord.opus.load_opus('libopus.so')
+    '''if not discord.opus.is_loaded():
+        discord.opus.load_opus('libopus.so')'''
 
-    @commands.command(name = "join")
+    @commands.command(name = "join", aliases = ["j"], help = "joins a voice channel")
     async def join(self, ctx):
         global voice
         channel = ctx.author.voice.channel
@@ -28,7 +28,7 @@ class voice(commands.Cog):
 
         await ctx.send("meow 🎶 :3")
 
-    @commands.command(name = "leave", aliases = ["disconnect"])
+    @commands.command(name = "leave", aliases = ["disconnect", "l", "dc"], help = "leaves voice channel")
     async def leave(self, ctx):
         voice = get(self.cat.voice_clients, guild = ctx.guild)
 
@@ -38,7 +38,7 @@ class voice(commands.Cog):
         else:
             await ctx.send("meow :3")
 
-    @commands.command(name = "play")
+    @commands.command(name = "play", help = "play a youtube url as mp3")
     async def play(self, ctx, url: str):
         song_there = os.path.isfile("song.mp3")
         try:
@@ -85,7 +85,7 @@ class voice(commands.Cog):
         await m.delete()
         await ctx.send(f"playing **{nname[0]}**")
 
-    @commands.command()
+    @commands.command(name = "pause", help = "pause music")
     async def pause(self, ctx):
         voice = get(self.cat.voice_clients, guild = ctx.guild)
 
@@ -95,7 +95,7 @@ class voice(commands.Cog):
         else:
             await ctx.send("no music running")
     
-    @commands.command()
+    @commands.command(name = "resume", help = "resume music")
     async def resume(self, ctx):
         voice = get(self.cat.voice_clients, guild = ctx.guild)
         
@@ -106,7 +106,7 @@ class voice(commands.Cog):
             print("no music paused")
             await ctx.send("no music paused")
 
-    @commands.command()
+    @commands.command(name = "stop", help = "stops playing")
     async def stop(self, ctx):
         voice = get(self.cat.voice_clients, guild = ctx.guild)
 
